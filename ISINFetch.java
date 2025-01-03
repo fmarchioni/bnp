@@ -30,17 +30,17 @@
    static int limit = 5;
 
    public static void main(String[] args) throws Exception {
-	         if (args.length > 0) {
-            offset = Integer.parseInt(args[0]);
-        }
+     if (args.length > 0) {
+       offset = Integer.parseInt(args[0]);
+     }
 
-        if (args.length > 1) {
-            limit = Integer.parseInt(args[1]);
-        }
+     if (args.length > 1) {
+       limit = Integer.parseInt(args[1]);
+     }
 
-        // Stampa i valori di offset e limit
-        System.out.println("Offset: " + offset);
-        System.out.println("Limit: " + limit);  
+     // Stampa i valori di offset e limit
+     System.out.println("Offset: " + offset);
+     System.out.println("Limit: " + limit);
 
      var sslContext = SSLContext.getInstance("TLS");
      var trustManager = new X509TrustManager() {
@@ -63,31 +63,32 @@
        .sslContext(sslContext)
        .build();
 
-	 String jsonPayload = """
-		{
-			"clientId": 1,
-			"languageId": "it",
-			"countryId": "",
-			"sortPreference": [],
-			"filterSelections": [],
-			"deeplinkParameters": null,
-			"oldDeepLinkString": null,
-			"firstUnderlyingIsin": null,
-			"isBNL": null,
-			"isDB": null,
-			"responsetype": null,
-			"productFlagFilter": 5,
-			"isDirectionFilterCanBeDisabled": true,
-			"derivativeTypeIds": [],
-			"productSetIds": [22, 23],
-			"productSubGroupIds": [],
-			"productGroupIds": [6],
-			"offset": %d,
-			"limit": %d,
-			"resolveSubPreset": true,
-			"resolveOnlySelectedPresets": false
-		}
-		""".formatted(offset, limit);
+     String jsonPayload = ""
+     " {
+       "clientId": 1,
+       "languageId": "it",
+       "countryId": "",
+       "sortPreference": [],
+       "filterSelections": [],
+       "deeplinkParameters": null,
+       "oldDeepLinkString": null,
+       "firstUnderlyingIsin": null,
+       "isBNL": null,
+       "isDB": null,
+       "responsetype": null,
+       "productFlagFilter": 5,
+       "isDirectionFilterCanBeDisabled": true,
+       "derivativeTypeIds": [],
+       "productSetIds": [22, 23],
+       "productSubGroupIds": [],
+       "productGroupIds": [6],
+       "offset": % d,
+       "limit": % d,
+       "resolveSubPreset": true,
+       "resolveOnlySelectedPresets": false
+     }
+     ""
+     ".formatted(offset, limit);
 
      HttpRequest request = HttpRequest.newBuilder()
        .uri(URI.create(url))
@@ -115,9 +116,9 @@
      HttpResponse < String > response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
      if (response.statusCode() == 200) {
-	   if (DEBUG) {	 
-            System.out.println(response.body());
-	   }
+       if (DEBUG) {
+         System.out.println(response.body());
+       }
        parseJSON(response.body());
      } else {
        System.err.println("Errore: " + response.statusCode());
