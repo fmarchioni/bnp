@@ -26,8 +26,21 @@
  public class ISINFetch {
    private static final String url = "https://investimenti.bnpparibas.it/apiv2/api/v1/productlist/";
    static boolean DEBUG = false;
+   static int offset = 0;
+   static int limit = 5;
 
    public static void main(String[] args) throws Exception {
+	         if (args.length > 0) {
+            offset = Integer.parseInt(args[0]);
+        }
+
+        if (args.length > 1) {
+            limit = Integer.parseInt(args[1]);
+        }
+
+        // Stampa i valori di offset e limit
+        System.out.println("Offset: " + offset);
+        System.out.println("Limit: " + limit);  
 
      var sslContext = SSLContext.getInstance("TLS");
      var trustManager = new X509TrustManager() {
@@ -50,14 +63,31 @@
        .sslContext(sslContext)
        .build();
 
-     String jsonPayload = "{\"clientId\":1,\"languageId\":\"it\",\"countryId\":\"\"," +
-       "\"sortPreference\":[],\"filterSelections\":[],\"deeplinkParameters\":null," +
-       "\"oldDeepLinkString\":null,\"firstUnderlyingIsin\":null,\"isBNL\":null," +
-       "\"isDB\":null,\"responsetype\":null,\"productFlagFilter\":5," +
-       "\"isDirectionFilterCanBeDisabled\":true,\"derivativeTypeIds\":[]," +
-       "\"productSetIds\":[22,23],\"productSubGroupIds\":[],\"productGroupIds\":[6]," +
-       "\"offset\":0,\"limit\":5,\"resolveSubPreset\":true," +
-       "\"resolveOnlySelectedPresets\":false}";
+	 String jsonPayload = """
+		{
+			"clientId": 1,
+			"languageId": "it",
+			"countryId": "",
+			"sortPreference": [],
+			"filterSelections": [],
+			"deeplinkParameters": null,
+			"oldDeepLinkString": null,
+			"firstUnderlyingIsin": null,
+			"isBNL": null,
+			"isDB": null,
+			"responsetype": null,
+			"productFlagFilter": 5,
+			"isDirectionFilterCanBeDisabled": true,
+			"derivativeTypeIds": [],
+			"productSetIds": [22, 23],
+			"productSubGroupIds": [],
+			"productGroupIds": [6],
+			"offset": %d,
+			"limit": %d,
+			"resolveSubPreset": true,
+			"resolveOnlySelectedPresets": false
+		}
+		""".formatted(offset, limit);
 
      HttpRequest request = HttpRequest.newBuilder()
        .uri(URI.create(url))
